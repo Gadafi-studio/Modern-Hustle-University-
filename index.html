@@ -2089,7 +2089,429 @@ const AI_TUTOR_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/bright-api`; // conf
 // ── SESSION STATE ─────────────────────────
 let currentSession = null;
 let currentUserId = null;
+// ══════════════════════════════════════════════════
+// MODERN HUSTLE LIVE — LIVEKIT
+// ══════════════════════════════════════════════════
 
+let mhLiveRoom = null;
+
+const LIVEKIT_TOKEN_FUNCTION_URL =
+  `${SUPABASE_URL}/functions/v1/livekit-token`;
+
+
+// ── GET LIVEKIT TOKEN ─────────────────────────────
+
+async function getModernHustleLiveToken() {
+
+  if (!currentSession) {
+    throw new Error('Please log in before joining Live Class.');
+  }
+
+  const response = await fetch(
+    LIVEKIT_TOKEN_FUNCTION_URL,
+    {
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization':
+          `Bearer ${currentSession.access_token}`
+      },
+
+      body: JSON.stringify({})
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.error || 'Failed to get LiveKit token.'
+    );
+  }
+
+  return data;
+}
+
+
+// ── JOIN LIVE CLASS ───────────────────────────────
+
+async function joinModernHustleLive() {
+
+  const status =
+    document.getElementById('live-connection-status');
+
+  const joinBtn =
+    document.getElementById('live-join-btn');
+
+  try {
+
+    if (!currentSession) {
+      toast('Please log in before joining Live Class.');
+      goTo('auth');
+      return;
+    }
+
+    joinBtn.disabled = true;
+    joinBtn.textContent = 'Connecting...';
+
+    if (status) {
+      status.textContent =
+        '● CONNECTING TO LIVE CLASS';
+    }
+
+    // Ask Supabase for a secure LiveKit token
+    const credentials =
+      await getModernHustleLiveToken();
+
+    console.log(
+      '[Modern Hustle Live] Token received'
+    );
+
+    // Create LiveKit room
+    mhLiveRoom = new LivekitClient.Room({
+      adaptiveStream: true,
+      dynacast: true
+    });
+
+    // Someone's media track becomes available
+    mhLiveRoom.on(
+      LivekitClient.RoomEvent.TrackSubscribed,
+      (track, publication, participant) => {
+
+        attachMHLiveTrack(
+          track,
+          participant.identity,
+          false
+        );
+
+        updateMHLiveParticipantCount();
+      }
+    );
+
+    // Media track removed
+    mhLiveRoom.on(
+      LivekitClient.RoomEvent.TrackUnsubscribed,
+      (track) => {
+
+        track.detach().forEach(
+          element => element.remove()
+        );
+
+        updateMHLiveParticipantCount();
+      }
+    );
+
+    // Participant joins
+    mhLiveRoom.on(
+      LivekitClient.RoomEvent.ParticipantConnected,
+      updateMHLiveParticipantCount
+    );
+
+    // Participant leaves
+    mhLiveRoom.on(
+      LivekitClient.RoomEvent.ParticipantDisconnected,
+      updateMHLiveParticipantCount
+    );
+
+    // Connect
+    await mhLiveRoom.connect(
+      credentials.serverUrl,
+      credentials.token
+    );
+
+    console.log(
+      '[Modern Hustle Live] Connected to:',
+      credentials.roomName
+    );
+
+    // Enable camera and microphone
+    await mhLiveRoom.localParticipant
+      .enableCameraAndMicrophone();
+
+    // Attach local camera
+    mhLiveRoom.localParticipant
+      .trackPublications
+      .forEach(publication => {
+
+        if (publication.track) {
+
+          attachMHLiveTrack(
+            publication.track,
+            mhLiveRoom.localParticipant.identity,
+            true
+          );
+
+        }
+      });
+
+    if (status) {
+      status.textContent =
+        '● LIVE — CONNECTED';
+    }
+
+    joinBtn.textContent =
+      '✓ Connected';
+
+    document.getElementById(
+      'live-mic-btn'
+    ).disabled = false;
+
+    document.getElementById(
+      'live-camera-btn'
+    ).disabled = false;
+
+    document.getElementById(
+      'live-leave-btn'
+    ).disabled = false;
+
+    updateMHLiveParticipantCount();
+
+  } catch (error) {
+
+    console.error(
+      '[Modern Hustle Live]',
+      error
+    );
+
+    if (status) {
+      status.textContent =
+        '● CONNECTION FAILED';
+    }
+
+    joinBtn.disabled = false;
+    joinBtn.textContent =
+      '🎥 Join Live Class';
+
+    toast(
+      error.message ||
+      'Unable to join Live Class.'
+    );
+  }
+}
+
+
+// ── ATTACH VIDEO / AUDIO ──────────────────────────
+
+function attachMHLiveTrack(
+  track,
+  identity,
+  local = false
+) {
+
+  const grid =
+    document.getElementById(
+      'live-video-grid'
+    );
+
+  if (!grid) return;
+
+  const empty =
+    document.getElementById(
+      'live-empty-state'
+    );
+
+  if (empty) empty.remove();
+
+  const wrapper =
+    document.createElement('div');
+
+  wrapper.className =
+    'mh-live-video';
+
+  wrapper.dataset.identity =
+    identity;
+
+  wrapper.style.cssText = `
+    position:relative;
+    background:#111;
+    min-height:240px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);
+  `;
+
+  const element =
+    track.attach();
+
+  element.style.cssText = `
+    width:100%;
+    height:100%;
+    min-height:240px;
+    object-fit:cover;
+    display:block;
+  `;
+
+  wrapper.appendChild(element);
+
+  const label =
+    document.createElement('div');
+
+  label.textContent =
+    local ? 'YOU' : identity;
+
+  label.style.cssText = `
+    position:absolute;
+    bottom:8px;
+    left:8px;
+    padding:5px 8px;
+    background:rgba(0,0,0,.75);
+    color:white;
+    font-family:var(--fm);
+    font-size:.5rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  `;
+
+  wrapper.appendChild(label);
+
+  grid.appendChild(wrapper);
+}
+
+
+// ── MICROPHONE ────────────────────────────────────
+
+async function toggleLiveMic() {
+
+  if (!mhLiveRoom) return;
+
+  const participant =
+    mhLiveRoom.localParticipant;
+
+  const enabled =
+    participant.isMicrophoneEnabled;
+
+  await participant.setMicrophoneEnabled(
+    !enabled
+  );
+
+  const btn =
+    document.getElementById(
+      'live-mic-btn'
+    );
+
+  if (btn) {
+    btn.textContent =
+      !enabled
+        ? '🎤 Mic ON'
+        : '🔇 Mic OFF';
+  }
+}
+
+
+// ── CAMERA ────────────────────────────────────────
+
+async function toggleLiveCamera() {
+
+  if (!mhLiveRoom) return;
+
+  const participant =
+    mhLiveRoom.localParticipant;
+
+  const enabled =
+    participant.isCameraEnabled;
+
+  await participant.setCameraEnabled(
+    !enabled
+  );
+
+  const btn =
+    document.getElementById(
+      'live-camera-btn'
+    );
+
+  if (btn) {
+    btn.textContent =
+      !enabled
+        ? '📹 Camera ON'
+        : '📷 Camera OFF';
+  }
+}
+
+
+// ── LEAVE ─────────────────────────────────────────
+
+async function leaveModernHustleLive() {
+
+  if (!mhLiveRoom) return;
+
+  await mhLiveRoom.disconnect();
+
+  mhLiveRoom = null;
+
+  document
+    .querySelectorAll('.mh-live-video')
+    .forEach(el => el.remove());
+
+  const status =
+    document.getElementById(
+      'live-connection-status'
+    );
+
+  if (status) {
+    status.textContent =
+      '● LEFT LIVE CLASS';
+  }
+
+  const joinBtn =
+    document.getElementById(
+      'live-join-btn'
+    );
+
+  if (joinBtn) {
+    joinBtn.disabled = false;
+    joinBtn.textContent =
+      '🎥 Join Live Class';
+  }
+
+  document.getElementById(
+    'live-mic-btn'
+  ).disabled = true;
+
+  document.getElementById(
+    'live-camera-btn'
+  ).disabled = true;
+
+  document.getElementById(
+    'live-leave-btn'
+  ).disabled = true;
+
+  updateMHLiveParticipantCount();
+}
+
+
+// ── PARTICIPANT COUNT ─────────────────────────────
+
+function updateMHLiveParticipantCount() {
+
+  const count =
+    document.getElementById(
+      'live-participant-count'
+    );
+
+  if (!count) return;
+
+  if (!mhLiveRoom) {
+    count.textContent = '0';
+    return;
+  }
+
+  count.textContent =
+    mhLiveRoom.numParticipants;
+}
+
+
+// Make functions available to HTML onclick=""
+window.joinModernHustleLive =
+  joinModernHustleLive;
+
+window.toggleLiveMic =
+  toggleLiveMic;
+
+window.toggleLiveCamera =
+  toggleLiveCamera;
+
+window.leaveModernHustleLive =
+  leaveModernHustleLive;
 // ── AUTH FUNCTIONS ────────────────────────
 
 async function dbSignUp(email, password, fullName) {
