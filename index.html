@@ -3696,7 +3696,17 @@ window.buildDailyMissions = buildDailyMissions;
 window.toggleMission = toggleMission;
 
 // ── ROUTER ────────────────────────────────
-const PM={landing:'page-landing',auth:'page-auth',dashboard:'page-dashboard',campus:'page-campus',lesson:'page-lesson',project:'page-project',profile:'page-profile',payment:'page-payment'};
+const PM={
+  landing:'page-landing',
+  auth:'page-auth',
+  dashboard:'page-dashboard',
+  campus:'page-campus',
+  lesson:'page-lesson',
+  project:'page-project',
+  profile:'page-profile',
+  payment:'page-payment',
+  'live-class':'page-live-class'
+};
 function goTo(p){
   const id=PM[p];if(!id)return;
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
