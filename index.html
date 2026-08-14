@@ -1918,7 +1918,146 @@ select.fp{appearance:none;cursor:pointer}textarea.fp{resize:vertical;min-height:
 .pmn{font-family:var(--fd);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
 .pms{font-size:.66rem;color:var(--muted);margin-top:.1rem}
 </style>
+<!-- ═══ PAGE: LIVE CLASS ═══ -->
+<div id="page-live-class" class="page">
 
+  <nav class="topnav">
+    <div class="nav-logo" onclick="goTo('dashboard')">
+      <button class="nb">←</button>
+      <div class="nlb"></div>
+      <span class="nlt">Modern Hustle</span>
+    </div>
+
+    <div class="np">
+      <div class="xpp">
+        <span class="xpl">LIVE</span>
+        <span class="xpv" id="live-status">OFFLINE</span>
+      </div>
+    </div>
+
+    <div class="nav-av">MH</div>
+  </nav>
+
+  <main style="padding:70px 1rem 6rem;max-width:1000px;margin:auto">
+
+    <div style="margin-bottom:1rem">
+      <div class="sl">[ MODERN HUSTLE LIVE ]</div>
+
+      <h1 style="
+        font-family:var(--fd);
+        font-weight:900;
+        font-size:2.2rem;
+        text-transform:uppercase;
+        line-height:.95;
+        margin:.4rem 0;
+      ">
+        Live Classroom
+      </h1>
+
+      <p style="color:var(--muted);font-size:.8rem">
+        Learn together. Ask questions. Watch operators solve real problems.
+      </p>
+    </div>
+
+    <div id="live-connection-status"
+      style="
+        border:1px solid var(--border);
+        background:var(--grey);
+        padding:.8rem;
+        margin-bottom:1rem;
+        font-family:var(--fm);
+        font-size:.55rem;
+        letter-spacing:.08em;
+        text-transform:uppercase;
+      ">
+      ● READY TO JOIN
+    </div>
+
+    <!-- VIDEO GRID -->
+    <div id="live-video-grid"
+      style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+        gap:8px;
+        min-height:280px;
+        background:#050505;
+        border:1px solid var(--border);
+        padding:8px;
+      ">
+
+      <div id="live-empty-state"
+        style="
+          min-height:260px;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          text-align:center;
+          color:var(--muted);
+          font-family:var(--fm);
+          font-size:.55rem;
+          letter-spacing:.08em;
+          text-transform:uppercase;
+        ">
+        No participants yet
+      </div>
+
+    </div>
+
+    <!-- CONTROLS -->
+    <div style="
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top:1rem;
+    ">
+
+      <button
+        class="bl"
+        id="live-join-btn"
+        onclick="joinModernHustleLive()">
+        🎥 Join Live Class
+      </button>
+
+      <button
+        class="bg"
+        id="live-mic-btn"
+        onclick="toggleLiveMic()"
+        disabled>
+        🎤 Mic
+      </button>
+
+      <button
+        class="bg"
+        id="live-camera-btn"
+        onclick="toggleLiveCamera()"
+        disabled>
+        📹 Camera
+      </button>
+
+      <button
+        class="bg"
+        id="live-leave-btn"
+        onclick="leaveModernHustleLive()"
+        disabled>
+        Leave
+      </button>
+
+    </div>
+
+    <div style="
+      margin-top:1rem;
+      font-family:var(--fm);
+      font-size:.55rem;
+      color:var(--muted);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    ">
+      👥 <span id="live-participant-count">0</span> participants
+    </div>
+
+  </main>
+
+</div>
 <!-- ═══ JAVASCRIPT ═══ -->
 <script>
 // ══════════════════════════════════════════════════
