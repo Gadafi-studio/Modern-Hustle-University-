@@ -2307,6 +2307,8 @@ function attachMHLiveTrack(
 
   if (!grid) return;
 
+
+  // Remove empty state
   const empty =
     document.getElementById(
       'live-empty-state'
@@ -2314,23 +2316,63 @@ function attachMHLiveTrack(
 
   if (empty) empty.remove();
 
-  const wrapper =
-    document.createElement('div');
 
-  wrapper.className =
-    'mh-live-video';
+  // Find existing participant tile
+  let wrapper =
+    grid.querySelector(
+      `.mh-live-video[data-identity="${CSS.escape(identity)}"]`
+    );
 
-  wrapper.dataset.identity =
-    identity;
 
-  wrapper.style.cssText = `
-    position:relative;
-    background:#111;
-    min-height:240px;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.12);
-  `;
+  // Create tile only if it doesn't already exist
+  if (!wrapper) {
 
+    wrapper =
+      document.createElement('div');
+
+    wrapper.className =
+      'mh-live-video';
+
+    wrapper.dataset.identity =
+      identity;
+
+    wrapper.style.cssText = `
+      position:relative;
+      background:#111;
+      min-height:240px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+    `;
+
+
+    // Participant label
+    const label =
+      document.createElement('div');
+
+    label.textContent =
+      local ? 'YOU' : identity;
+
+    label.style.cssText = `
+      position:absolute;
+      bottom:8px;
+      left:8px;
+      padding:5px 8px;
+      background:rgba(0,0,0,.75);
+      color:white;
+      font-family:var(--fm);
+      font-size:.5rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      z-index:2;
+    `;
+
+    wrapper.appendChild(label);
+
+    grid.appendChild(wrapper);
+  }
+
+
+  // Attach video/audio track
   const element =
     track.attach();
 
@@ -2343,29 +2385,6 @@ function attachMHLiveTrack(
   `;
 
   wrapper.appendChild(element);
-
-  const label =
-    document.createElement('div');
-
-  label.textContent =
-    local ? 'YOU' : identity;
-
-  label.style.cssText = `
-    position:absolute;
-    bottom:8px;
-    left:8px;
-    padding:5px 8px;
-    background:rgba(0,0,0,.75);
-    color:white;
-    font-family:var(--fm);
-    font-size:.5rem;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-  `;
-
-  wrapper.appendChild(label);
-
-  grid.appendChild(wrapper);
   }
 
 
