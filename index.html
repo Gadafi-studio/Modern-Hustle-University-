@@ -5775,6 +5775,51 @@ let _tt;
 function toast(msg){const el=document.getElementById('xp-toast');el.textContent='⚡ '+msg;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2800)}
 window.toast=toast;
 
+// ── MENTOR ACCESS ─────────────────────────
+async function detectMentorAccess() {
+
+  const mentorButton =
+    document.getElementById(
+      'mentor-sidebar-btn'
+    );
+
+  if (!mentorButton)
+    return;
+
+  if (!currentUserId) {
+    mentorButton.style.display = 'none';
+    return;
+  }
+
+  try {
+
+    const assignments =
+      await dbGetMyMentorAssignments(
+        currentUserId
+      );
+
+    const hasMentorAccess =
+      assignments.length > 0;
+
+    mentorButton.style.display =
+      hasMentorAccess
+        ? ''
+        : 'none';
+
+  } catch (err) {
+
+    console.error(
+      'Mentor access detection failed:',
+      err.message
+    );
+
+    mentorButton.style.display = 'none';
+  }
+}
+
+window.detectMentorAccess =
+  detectMentorAccess;
+  
 // ── MODAL ─────────────────────────────────
 function openMod(id){document.getElementById(id)?.classList.add('open');document.body.style.overflow='hidden'}
 function closeMod(id){document.getElementById(id)?.classList.remove('open');document.body.style.overflow=''}
