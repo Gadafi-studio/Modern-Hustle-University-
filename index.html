@@ -6155,15 +6155,26 @@ window.addEventListener('DOMContentLoaded', async ()=>{
   // If the student already logged in before, skip straight to dashboard
   // instead of showing the landing/auth screens again.
   try {
-    const session = await dbGetSession();
-    if (session) {
-      const profile = await dbGetProfile(session.user.id);
-      S.xp = profile.total_xp || 0;
-      save();
-      updXP();
-      goTo('dashboard');
-    }
-  } catch (err) {
+  const session = await dbGetSession();
+
+  if (session) {
+
+    await detectMentorAccess();
+
+    const profile =
+      await dbGetProfile(
+        session.user.id
+      );
+
+    S.xp =
+      profile.total_xp || 0;
+
+    save();
+    updXP();
+
+    goTo('dashboard');
+  }
+ } catch (err) {
     // No session or profile not found yet — stay on landing page, this is normal for first-time visitors
     console.log('No active session — showing landing page');
   }
