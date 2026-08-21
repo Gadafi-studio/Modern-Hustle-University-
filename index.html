@@ -83,6 +83,222 @@ select.fp{appearance:none;cursor:pointer}textarea.fp{resize:vertical;min-height:
 .stp{display:flex;align-items:center;gap:.26rem;background:rgba(255,122,0,.08);border:1px solid rgba(255,122,0,.18);padding:.26rem .6rem;border-radius:100px;font-family:var(--fm);font-size:.46rem;color:#FF9A3C;letter-spacing:.06em}
 .nav-av{width:30px;height:30px;border-radius:50%;background:var(--grey2);border:2px solid var(--lb);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:700;font-size:.7rem;color:var(--lime);cursor:pointer}
 .bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:400;height:var(--bh);background:var(--black);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around}
+/* ══════════════════════════════════════════════
+   MENTOR DASHBOARD — PHASE 4A
+   ══════════════════════════════════════════════ */
+
+.mentor-page{
+  padding:calc(var(--nh) + 1.2rem) 1rem calc(var(--bh) + 1.5rem);
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.mentor-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:1.25rem;
+}
+
+.mentor-kicker{
+  font-family:var(--fm);
+  font-size:.48rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--lime);
+  margin-bottom:.35rem;
+}
+
+.mentor-title{
+  font-family:var(--fd);
+  font-size:2rem;
+  font-weight:900;
+  line-height:.95;
+  text-transform:uppercase;
+}
+
+.mentor-subtitle{
+  color:var(--muted);
+  font-size:.78rem;
+  margin-top:.4rem;
+}
+
+.mentor-campus-card{
+  background:var(--grey);
+  border:1px solid var(--lb);
+  border-left:3px solid var(--lime);
+  padding:1rem;
+  margin-bottom:1rem;
+}
+
+.mentor-campus-label{
+  font-family:var(--fm);
+  font-size:.46rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin-bottom:.35rem;
+}
+
+.mentor-campus-name{
+  font-family:var(--fd);
+  font-size:1.35rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+.mentor-campus-slug{
+  font-family:var(--fm);
+  font-size:.48rem;
+  color:var(--lime);
+  margin-top:.25rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.mentor-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:.7rem;
+  margin-bottom:1rem;
+}
+
+.mentor-stat{
+  background:var(--grey);
+  border:1px solid var(--border);
+  padding:.9rem;
+}
+
+.mentor-stat-value{
+  font-family:var(--fd);
+  font-size:1.65rem;
+  font-weight:800;
+  color:var(--white);
+}
+
+.mentor-stat-label{
+  font-family:var(--fm);
+  font-size:.45rem;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--dim);
+  margin-top:.25rem;
+}
+
+.mentor-section{
+  background:var(--grey);
+  border:1px solid var(--border);
+  padding:1rem;
+  margin-bottom:1rem;
+}
+
+.mentor-section-title{
+  font-family:var(--fm);
+  font-size:.5rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--lime);
+  margin-bottom:.8rem;
+}
+
+.mentor-action-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:.65rem;
+}
+
+.mentor-action{
+  background:var(--panel);
+  border:1px solid var(--border);
+  color:var(--white);
+  padding:.9rem;
+  text-align:left;
+  cursor:pointer;
+  transition:border-color .15s,background .15s;
+}
+
+.mentor-action:hover{
+  border-color:var(--lb);
+  background:var(--grey2);
+}
+
+.mentor-action-icon{
+  font-size:1.15rem;
+  margin-bottom:.45rem;
+}
+
+.mentor-action-title{
+  font-family:var(--fd);
+  font-size:.82rem;
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+.mentor-action-desc{
+  font-size:.62rem;
+  color:var(--muted);
+  margin-top:.2rem;
+  line-height:1.4;
+}
+
+.mentor-session{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding:.75rem 0;
+  border-bottom:1px solid var(--border);
+}
+
+.mentor-session:last-child{
+  border-bottom:none;
+}
+
+.mentor-session-title{
+  font-family:var(--fd);
+  font-weight:700;
+  font-size:.85rem;
+  text-transform:uppercase;
+}
+
+.mentor-session-meta{
+  font-family:var(--fm);
+  font-size:.45rem;
+  letter-spacing:.06em;
+  color:var(--muted);
+  margin-top:.2rem;
+}
+
+.mentor-empty{
+  color:var(--muted);
+  font-family:var(--fm);
+  font-size:.5rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  padding:.5rem 0;
+}
+
+@media(max-width:859px){
+  .mentor-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .mentor-action-grid{
+    grid-template-columns:1fr;
+  }
+
+  .mentor-header{
+    flex-direction:column;
+  }
+}
+
+@media(min-width:860px){
+  .mentor-page{
+    margin-left:var(--sw);
+    padding-bottom:2rem;
+  }
+  }
 .bn{display:flex;flex-direction:column;align-items:center;gap:.15rem;flex:1;padding:.4rem;cursor:pointer;font-family:var(--fm);font-size:.42rem;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);transition:color .15s;border:none;background:none}
 .bn.active{color:var(--lime)}.bni{font-size:1rem;line-height:1}
 @media(min-width:860px){
@@ -914,6 +1130,293 @@ select.fp{appearance:none;cursor:pointer}textarea.fp{resize:vertical;min-height:
   <button class="bn" onclick="sTab('tab-wins',document.getElementById('tab-wins-btn'));bnav(this)"><span class="bni">🏆</span>Wins</button>
   <button class="bn" onclick="goTo('profile');bnav(this)"><span class="bni">👤</span>Profile</button>
 </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PAGE: MENTOR DASHBOARD — PHASE 4A
+     ══════════════════════════════════════════════ -->
+
+<div id="page-mentor-dashboard" class="page">
+
+  <nav class="topnav">
+    <div class="nav-logo" onclick="goTo('dashboard')">
+      <button class="nb">←</button>
+      <div class="nlb"></div>
+      <span class="nlt">Modern Hustle</span>
+    </div>
+
+    <div class="mentor-kicker" style="margin:0">
+      MENTOR MODE
+    </div>
+
+    <div class="nav-av" id="mentor-nav-avatar">ME</div>
+  </nav>
+
+  <main class="mentor-page">
+
+    <div class="mentor-header">
+      <div>
+        <div class="mentor-kicker">[ Human Mentor Layer ]</div>
+
+        <div class="mentor-title">
+          Mentor Dashboard
+        </div>
+
+        <div class="mentor-subtitle">
+          Manage your assigned campus and support your students.
+        </div>
+      </div>
+
+      <button
+        class="bg"
+        onclick="goTo('dashboard')"
+      >
+        ← Student Dashboard
+      </button>
+    </div>
+
+    <!-- ASSIGNED CAMPUS -->
+
+    <div class="mentor-campus-card">
+
+      <div class="mentor-campus-label">
+        Assigned Campus
+      </div>
+
+      <div
+        class="mentor-campus-name"
+        id="mentor-campus-name"
+      >
+        Loading...
+      </div>
+
+      <div
+        class="mentor-campus-slug"
+        id="mentor-campus-slug"
+      >
+        Checking assignment...
+      </div>
+
+    </div>
+
+    <!-- OVERVIEW STATS -->
+
+    <div class="mentor-grid">
+
+      <div class="mentor-stat">
+        <div
+          class="mentor-stat-value"
+          id="mentor-stat-lessons"
+        >
+          —
+        </div>
+
+        <div class="mentor-stat-label">
+          Campus Lessons
+        </div>
+      </div>
+
+      <div class="mentor-stat">
+        <div
+          class="mentor-stat-value"
+          id="mentor-stat-live"
+        >
+          —
+        </div>
+
+        <div class="mentor-stat-label">
+          Live Sessions
+        </div>
+      </div>
+
+      <div class="mentor-stat">
+        <div
+          class="mentor-stat-value"
+          id="mentor-stat-upcoming"
+        >
+          —
+        </div>
+
+        <div class="mentor-stat-label">
+          Upcoming Sessions
+        </div>
+      </div>
+
+      <div class="mentor-stat">
+        <div
+          class="mentor-stat-value"
+          id="mentor-stat-status"
+        >
+          ACTIVE
+        </div>
+
+        <div class="mentor-stat-label">
+          Mentor Status
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MENTOR ACTIONS -->
+
+    <div class="mentor-section">
+
+      <div class="mentor-section-title">
+        [ Mentor Workspace ]
+      </div>
+
+      <div class="mentor-action-grid">
+
+        <button
+          class="mentor-action"
+          onclick="mentorOpenCampus()"
+        >
+          <div class="mentor-action-icon">🏫</div>
+
+          <div class="mentor-action-title">
+            My Campus
+          </div>
+
+          <div class="mentor-action-desc">
+            Open your assigned campus and inspect its curriculum.
+          </div>
+        </button>
+
+        <button
+          class="mentor-action"
+          onclick="goTo('live-class')"
+        >
+          <div class="mentor-action-icon">🎥</div>
+
+          <div class="mentor-action-title">
+            Live Sessions
+          </div>
+
+          <div class="mentor-action-desc">
+            Open the existing Modern Hustle Live classroom.
+          </div>
+        </button>
+
+        <button
+          class="mentor-action"
+          onclick="mentorComingSoon('Student Management')"
+        >
+          <div class="mentor-action-icon">👥</div>
+
+          <div class="mentor-action-title">
+            Students
+          </div>
+
+          <div class="mentor-action-desc">
+            Student monitoring and intervention tools are next.
+          </div>
+        </button>
+
+        <button
+          class="mentor-action"
+          onclick="mentorComingSoon('Curriculum Management')"
+        >
+          <div class="mentor-action-icon">📚</div>
+
+          <div class="mentor-action-title">
+            Curriculum
+          </div>
+
+          <div class="mentor-action-desc">
+            Manage lessons, projects and learning content.
+          </div>
+        </button>
+
+        <button
+          class="mentor-action"
+          onclick="mentorComingSoon('Project Reviews')"
+        >
+          <div class="mentor-action-icon">🛠</div>
+
+          <div class="mentor-action-title">
+            Project Reviews
+          </div>
+
+          <div class="mentor-action-desc">
+            Review student projects requiring human judgment.
+          </div>
+        </button>
+
+        <button
+          class="mentor-action"
+          onclick="mentorComingSoon('Analytics')"
+        >
+          <div class="mentor-action-icon">📊</div>
+
+          <div class="mentor-action-title">
+            Analytics
+          </div>
+
+          <div class="mentor-action-desc">
+            Campus performance analytics will be connected next.
+          </div>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- UPCOMING LIVE SESSIONS -->
+
+    <div class="mentor-section">
+
+      <div class="mentor-section-title">
+        [ Upcoming Live Sessions ]
+      </div>
+
+      <div id="mentor-live-sessions">
+
+        <div class="mentor-empty">
+          Loading live sessions...
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <nav class="bottomnav">
+
+    <button
+      class="bn"
+      onclick="goTo('dashboard');bnav(this)"
+    >
+      <span class="bni">⚡</span>
+      Home
+    </button>
+
+    <button
+      class="bn"
+      onclick="mentorOpenCampus()"
+    >
+      <span class="bni">🏫</span>
+      Campus
+    </button>
+
+    <button
+      class="bn"
+      onclick="goTo('live-class');bnav(this)"
+    >
+      <span class="bni">🎥</span>
+      Live
+    </button>
+
+    <button
+      class="bn active"
+      onclick="goTo('mentor-dashboard');bnav(this)"
+    >
+      <span class="bni">🧑‍🏫</span>
+      Mentor
+    </button>
+
+  </nav>
+
 </div>
 
 <!-- ═══ PAGE: CAMPUS ═══ -->
@@ -2096,6 +2599,15 @@ const AI_TUTOR_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/bright-api`; // conf
 // ── SESSION STATE ─────────────────────────
 let currentSession = null;
 let currentUserId = null;
+
+/* ══════════════════════════════════════════════
+   MENTOR STATE — PHASE 4A
+   ══════════════════════════════════════════════ */
+
+let currentMentorAssignments = [];
+let currentMentorCampus = null;
+let isCurrentUserMentor = false;
+  
 // ══════════════════════════════════════════════════
 // MODERN HUSTLE LIVE — LIVEKIT
 // ══════════════════════════════════════════════════
@@ -2615,7 +3127,60 @@ async function dbCheckCampusAccess(userId, campusId) {
   return data;
 }
 
-// ── LESSON FUNCTIONS ──────────────────────
+// ── MENTOR FUNCTIONS ──────────────────────
+
+async function dbGetMyMentorAssignments(userId) {
+
+  const { data, error } = await db
+    .from('campus_mentors')
+    .select(`
+      id,
+      campus_id,
+      mentor_id,
+      status,
+      assigned_at,
+      campuses (
+        id,
+        title,
+        slug,
+        description,
+        icon_url,
+        order_index
+      )
+    `)
+    .eq('mentor_id', userId)
+    .eq('status', 'active');
+
+  if (error) throw error;
+
+  return data || [];
+}
+
+
+async function dbGetCampusLiveSessions(campusId) {
+
+  const { data, error } = await db
+    .from('live_sessions')
+    .select(`
+      id,
+      title,
+      description,
+      scheduled_at,
+      duration_minutes,
+      status,
+      room_name,
+      campus_id,
+      lesson_id,
+      mentor_id
+    `)
+    .eq('campus_id', campusId)
+    .order('scheduled_at', { ascending: true });
+
+  if (error) throw error;
+
+  return data || [];
+  }
+  // ── LESSON FUNCTIONS ──────────────────────
 
 async function dbGetLessonsByCampus(campusId) {
   const { data, error } = await db.from('lessons')
@@ -4154,6 +4719,7 @@ const PM={
   profile:'page-profile',
   payment:'page-payment',
   'live-class':'page-live-class'
+  'mentor-dashboard':'page-mentor-dashboard'
 };
 function goTo(p){
   const id=PM[p];if(!id)return;
@@ -4173,10 +4739,303 @@ function goTo(p){
       if (CAMPUS_IDS[campusKey]) loadDynamicCampusLessons(CAMPUS_IDS[campusKey]);
     }
   }
-  if(p==='project') loadProjectNavAvatar();
+    if(p==='project') loadProjectNavAvatar();
+
+  if(p==='mentor-dashboard') {
+    loadMentorDashboard();
+  }
 }
 window.goTo=goTo;
+  
+// ══════════════════════════════════════════════
+// MENTOR DASHBOARD — PHASE 4A
+// ══════════════════════════════════════════════
 
+async function loadMentorDashboard() {
+
+  const campusNameEl =
+    document.getElementById('mentor-campus-name');
+
+  const campusSlugEl =
+    document.getElementById('mentor-campus-slug');
+
+  const lessonsEl =
+    document.getElementById('mentor-stat-lessons');
+
+  const liveEl =
+    document.getElementById('mentor-stat-live');
+
+  const upcomingEl =
+    document.getElementById('mentor-stat-upcoming');
+
+  const sessionsEl =
+    document.getElementById('mentor-live-sessions');
+
+  if (!currentUserId) {
+    toast('Please sign in first.');
+    goTo('auth');
+    return;
+  }
+
+  if (campusNameEl)
+    campusNameEl.textContent = 'Loading...';
+
+  if (campusSlugEl)
+    campusSlugEl.textContent = 'Checking mentor assignment...';
+
+  try {
+
+    /* ------------------------------------------
+       1. LOAD MENTOR ASSIGNMENTS
+       ------------------------------------------ */
+
+    currentMentorAssignments =
+      await dbGetMyMentorAssignments(currentUserId);
+
+    isCurrentUserMentor =
+      currentMentorAssignments.length > 0;
+
+    if (!isCurrentUserMentor) {
+
+      if (campusNameEl)
+        campusNameEl.textContent = 'No Assignment';
+
+      if (campusSlugEl)
+        campusSlugEl.textContent =
+          'No active mentor assignment found';
+
+      if (lessonsEl) lessonsEl.textContent = '0';
+      if (liveEl) liveEl.textContent = '0';
+      if (upcomingEl) upcomingEl.textContent = '0';
+
+      if (sessionsEl) {
+        sessionsEl.innerHTML = `
+          <div class="mentor-empty">
+            No active mentor assignment found for this account.
+          </div>
+        `;
+      }
+
+      return;
+    }
+
+    /* ------------------------------------------
+       2. USE FIRST ACTIVE ASSIGNMENT
+       ------------------------------------------ */
+
+    currentMentorCampus =
+      currentMentorAssignments[0];
+
+    const campus =
+      currentMentorCampus.campuses;
+
+    if (!campus) {
+      throw new Error(
+        'Mentor assignment has no linked campus.'
+      );
+    }
+
+    /* ------------------------------------------
+       3. DISPLAY CAMPUS
+       ------------------------------------------ */
+
+    if (campusNameEl)
+      campusNameEl.textContent =
+        campus.title || 'Assigned Campus';
+
+    if (campusSlugEl)
+      campusSlugEl.textContent =
+        `${campus.slug || ''} · ACTIVE MENTOR ASSIGNMENT`;
+
+    /* ------------------------------------------
+       4. LOAD CAMPUS LESSONS
+       ------------------------------------------ */
+
+    const lessons =
+      await dbGetLessonsByCampus(campus.id);
+
+    if (lessonsEl)
+      lessonsEl.textContent =
+        lessons.length;
+
+    /* ------------------------------------------
+       5. LOAD CAMPUS LIVE SESSIONS
+       ------------------------------------------ */
+
+    const sessions =
+      await dbGetCampusLiveSessions(campus.id);
+
+    const now =
+      new Date();
+
+    const upcomingSessions =
+      sessions.filter(session => {
+
+        if (!session.scheduled_at)
+          return false;
+
+        return (
+          new Date(session.scheduled_at) >= now &&
+          session.status !== 'cancelled'
+        );
+
+      });
+
+    if (liveEl)
+      liveEl.textContent =
+        sessions.length;
+
+    if (upcomingEl)
+      upcomingEl.textContent =
+        upcomingSessions.length;
+
+    /* ------------------------------------------
+       6. RENDER UPCOMING SESSIONS
+       ------------------------------------------ */
+
+    if (!sessionsEl)
+      return;
+
+    if (!upcomingSessions.length) {
+
+      sessionsEl.innerHTML = `
+        <div class="mentor-empty">
+          No upcoming live sessions for this campus.
+        </div>
+      `;
+
+      return;
+    }
+
+    sessionsEl.innerHTML =
+      upcomingSessions
+        .slice(0, 5)
+        .map(session => {
+
+          const date =
+            new Date(session.scheduled_at);
+
+          const formatted =
+            date.toLocaleString([], {
+              dateStyle:'medium',
+              timeStyle:'short'
+            });
+
+          return `
+            <div class="mentor-session">
+
+              <div>
+                <div class="mentor-session-title">
+                  ${escapeHtml(session.title || 'Live Session')}
+                </div>
+
+                <div class="mentor-session-meta">
+                  ${escapeHtml(formatted)}
+                  · ${session.duration_minutes || 60} MIN
+                </div>
+              </div>
+
+              <button
+                class="bl sm"
+                onclick="goTo('live-class')"
+              >
+                Open Live
+              </button>
+
+            </div>
+          `;
+
+        })
+        .join('');
+
+  } catch (err) {
+
+    console.error(
+      'Mentor dashboard failed:',
+      err
+    );
+
+    if (campusNameEl)
+      campusNameEl.textContent =
+        'Unable to load';
+
+    if (campusSlugEl)
+      campusSlugEl.textContent =
+        err.message || 'Database error';
+
+    if (sessionsEl) {
+      sessionsEl.innerHTML = `
+        <div class="mentor-empty">
+          Could not load mentor workspace.
+        </div>
+      `;
+    }
+
+    toast(
+      `Mentor dashboard error: ${err.message}`
+    );
+  }
+}
+
+
+function mentorOpenCampus() {
+
+  if (
+    !currentMentorCampus ||
+    !currentMentorCampus.campuses
+  ) {
+    toast('Mentor campus is not loaded yet.');
+    return;
+  }
+
+  const campus =
+    currentMentorCampus.campuses;
+
+  /*
+   * Your existing campus page uses local campus
+   * keys such as forex, ai, app, content and biz.
+   */
+
+  const slug =
+    campus.slug || '';
+
+  const keyMap = {
+    'forex-crypto':'forex',
+    'ai-automation':'ai',
+    'app-building':'app',
+    'content-creation':'content',
+    'digital-business':'biz'
+  };
+
+  const campusKey =
+    keyMap[slug];
+
+  goTo('campus');
+
+  if (!campusKey)
+    return;
+
+  setTimeout(() => {
+
+    const button =
+      document.querySelector(
+        `#page-campus .tab[onclick*="sCampus('${campusKey}'"]`
+      );
+
+    if (button)
+      sCampus(campusKey, button);
+
+  }, 100);
+}
+
+
+function mentorComingSoon(feature) {
+
+  toast(
+    `${feature} is coming in the next mentor phase.`
+  );
+                }
+  
 // ── LOAD REAL DASHBOARD DATA ──────────────
 // Replaces hardcoded "Amara O." greeting with the real logged-in student's name.
 // ══════════════════════════════════════════════
