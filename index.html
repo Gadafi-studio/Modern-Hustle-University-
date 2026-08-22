@@ -4728,7 +4728,12 @@ function goTo(p){
   window.scrollTo(0,0);
   if(p==='payment') initPaymentPage();
   if(['dashboard','profile'].includes(p)){setTimeout(()=>{updXP();refreshBars();},300)}
-  if(p==='dashboard') { refreshDashboardCampuses(); setTimeout(buildDailyMissions, 100); loadRealDashboard(); }
+  if(p==='dashboard') {
+  refreshDashboardCampuses();
+  setTimeout(buildDailyMissions, 100);
+  loadRealDashboard();
+  loadRealWins();
+     }
   if(p==='profile') loadRealProfile();
   if(p==='campus') {
     applySequentialLessonLocks(); loadCampusNavAvatar();
