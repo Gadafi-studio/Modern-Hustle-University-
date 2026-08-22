@@ -1097,6 +1097,7 @@ select.fp{appearance:none;cursor:pointer}textarea.fp{resize:vertical;min-height:
       <div class="shead"><span class="stit">Wins Feed</span></div>
       <div class="wlist">
         <button class="pwb" onclick="openMod('win-modal')"><span>+ Post Your Win</span></button>
+        <div id="real-wins-feed"></div>
         <div class="wcard fu"><div class="wtop"><div class="wav" style="color:#7abf7c;border:1px solid rgba(122,191,124,.3)">NK</div><div class="wmeta"><div class="wmn">Ngozi K.<div class="wchk">✓</div></div><div class="wsub">🔥 Architect · APP · 2h</div></div></div><div class="wtxt">Clinic SaaS. 12 clinics onboarded in first week.</div><div class="wamt">$1,200 MRR</div><div class="wact"><button class="wbtn liked" onclick="tLike(this)">▲ <span>24</span> Fire</button><button class="wbtn">💬 12</button></div></div>
         <div class="wcard fu"><div class="wtop"><div class="wav" style="color:var(--lime);border:1px solid var(--lb)">EM</div><div class="wmeta"><div class="wmn">Emmanuel M.<div class="wchk">✓</div></div><div class="wsub">⭐ Builder · FOREX · 4h</div></div></div><div class="wtxt">Passed FTMO $100k challenge on first attempt.</div><div class="wamt">Funded — $100K</div><div class="wact"><button class="wbtn" onclick="tLike(this)">▲ <span>51</span> Fire</button><button class="wbtn">💬 18</button></div></div>
         <div class="wcard fu"><div class="wtop"><div class="wav" style="color:#FF9A3C;border:1px solid rgba(255,154,60,.2)">AO</div><div class="wmeta"><div class="wmn">Amara O.<div class="wchk">✓</div></div><div class="wsub">⭐ Builder · AI · 6h</div></div></div><div class="wtxt">AI chatbot for pharmacy chain. Client handling 3× more enquiries with zero extra staff.</div><div class="wamt">KSh 45,000/mo</div><div class="wact"><button class="wbtn" onclick="tLike(this)">▲ <span>31</span> Fire</button><button class="wbtn">💬 9</button></div></div>
@@ -6103,6 +6104,164 @@ async function submitWin(){
 }
 window.submitWin=submitWin;
 
+// ── REAL WINS FEED ─────────────────────────────
+
+async function loadRealWins() {
+  const feed = document.getElementById('real-wins-feed');
+  if (!feed) return;
+
+  try {
+    const { data: wins, error } = await db
+      .from('submissions')
+      .select('id, user_id, artifact_url, feedback_notes, created_at')
+      .order('created_at', { ascending: false })
+      .limit(50);
+
+    if (error) throw error;
+
+    // Keep only actual Post Your Win records
+    const realWins = (wins || []).filter(row => {
+      try {
+        const meta = JSON.parse(row.feedback_notes || '{}');
+        return meta.type === 'win';
+      } catch {
+        return false;
+      }
+    });
+
+    if (!realWins.length) {
+      feed.innerHTML = '';
+      return;
+    }
+
+    // Get the profiles for the students who posted wins
+    const userIds = [...new Set(realWins.map(win => win.user_id))];
+
+    const { data: profiles, error: profileError } = await db
+      .from('profiles')
+      .select('id, username, full_name')
+      .in('id', userIds);
+
+    if (profileError) throw profileError;
+
+    const profileMap = {};
+
+    (profiles || []).forEach(profile => {
+      profileMap[profile.id] = profile;
+    });
+
+    feed.innerHTML = realWins.map(row => {
+      const meta = JSON.parse(row.feedback_notes || '{}');
+      const profile = profileMap[row.user_id] || {};
+
+      const name =
+        profile.full_name ||
+        profile.username ||
+        'Modern Hustle Student';
+
+      const initials = name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part.charAt(0))
+        .join('')
+        .toUpperCase();
+
+      const campus = meta.campus || 'Modern Hustle';
+
+      const imageHtml =
+        row.artifact_url &&
+        row.artifact_url !== 'no-file-attached'
+          ? `
+            <div style="margin-top:.8rem">
+              <img
+                src="${row.artifact_url}"
+                alt="Win posted by ${name}"
+                loading="lazy"
+                style="width:100%;max-height:300px;object-fit:cover;border-radius:8px;display:block"
+              >
+            </div>
+          `
+          : '';
+
+      return `
+        <div class="wcard fu">
+
+          <div class="wtop">
+
+            <div
+              class="wav"
+              style="color:var(--lime);border:1px solid var(--lb)"
+            >
+              ${initials}
+            </div>
+
+            <div class="wmeta">
+
+              <div class="wmn">
+                ${name}
+                <div class="wchk">✓</div>
+              </div>
+
+              <div class="wsub">
+                🔥 Student · ${campus}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="wtxt">
+            ${meta.title || meta.description || 'New win posted 🔥'}
+          </div>
+
+          ${
+            meta.amount
+              ? `<div class="wamt">${meta.amount}</div>`
+              : ''
+          }
+
+          ${imageHtml}
+
+          ${
+            meta.description && meta.description !== meta.title
+              ? `
+                <div style="margin-top:.6rem;color:var(--muted);font-size:.76rem;line-height:1.5">
+                  ${meta.description}
+                </div>
+              `
+              : ''
+          }
+
+          <div class="wact">
+
+            <button class="wbtn" onclick="tLike(this)">
+              ▲ <span>0</span> Fire
+            </button>
+
+            <button class="wbtn">
+              💬 0
+            </button>
+
+          </div>
+
+        </div>
+      `;
+    }).join('');
+
+  } catch (err) {
+    console.error('Failed to load real wins:', err);
+
+    feed.innerHTML = `
+      <div style="padding:1rem;text-align:center;color:var(--dim);font-size:.75rem">
+        Could not load community wins.
+      </div>
+    `;
+  }
+}
+
+window.loadRealWins = loadRealWins;
+  
 // ── REVIEW ────────────────────────────────
 let _rat=0;
 function setRat(v,btn){_rat=v;document.querySelectorAll('#rev-modal .bg').forEach(b=>{b.style.borderColor='rgba(255,255,255,.18)';b.style.background=''});btn.style.borderColor='var(--lime)';btn.style.background='rgba(200,255,0,.06)'}
